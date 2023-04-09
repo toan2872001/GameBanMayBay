@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GameController : Singleton<GameController>
+public class  GameController : MonoBehaviour
 {
+
     int score;
     public TextMeshProUGUI killCounting;
     public GameObject hinhVuong;
     public GameObject hinhThoi;
     public GameObject tamGiac;
     public GameObject Hcn;
-    public int spawnTime;
-    int cur_Time;
     public int Score { get => score; set => score = value; }
     public void IncreScore()
     {
@@ -20,39 +19,47 @@ public class GameController : Singleton<GameController>
     }
 
     // Start is called before the first frame update
-    private void Awake()
+    public void Start()
     {
-        cur_Time = spawnTime;
+        
+        StartCoroutine(CreateEnemy());
     }
 
     // Update is called once per frame
     void Update()
     {
         killCounting.text = score.ToString();
-        CreatEnemie();
     }
-    public void CreatEnemie()
+    IEnumerator CreateEnemy()
     {
-        cur_Time--;
-        if (cur_Time ==12000)
+        int t = 0;
+        while (t <= 3)
         {
-            Instantiate(hinhVuong, transform.position, Quaternion.identity);
+            CreteHinhVuong();
+            yield return new WaitForSeconds(20);
+            CreteHinhThoi();
+            yield return new WaitForSeconds(20);
+            CreteTamGiac();
+            yield return new WaitForSeconds(20);
+            CreteHcn();
+            yield return new WaitForSeconds(20);
         }
-        else if ( cur_Time ==9000)
-        {
-            Instantiate(hinhThoi, transform.position, Quaternion.identity);
-        }
-        else if (cur_Time == 6000)
-        {
-            Instantiate(tamGiac, transform.position, Quaternion.identity);
-        }
-        else if (cur_Time == 3000)
-        {
-            Instantiate(Hcn, transform.position, Quaternion.identity);
-        }
-        else if (cur_Time == 0)
-        {
-            cur_Time = spawnTime;
-        }
+    }
+    
+    public void CreteHinhVuong()
+    {
+        Instantiate(hinhVuong, transform.position, Quaternion.identity);
+    }
+    public void CreteHinhThoi()
+    {
+        Instantiate(hinhThoi, transform.position, Quaternion.identity);
+    }
+    public void CreteTamGiac()
+    {
+        Instantiate(tamGiac, transform.position, Quaternion.identity);
+    }
+    public void CreteHcn()
+    {
+        Instantiate(Hcn, transform.position, Quaternion.identity);
     }
 }
